@@ -1,117 +1,83 @@
-# Grafana panel plugin template
+[![grafana](https://img.shields.io/badge/Grafana-F46800?style=for-the-badge&logo=grafana&logoColor=white)]([https://www.blender.org/](https://grafana.com/))
 
-This template is a starting point for building a panel plugin for Grafana.
+# Graforb - High-Performance Graph Visualization Panel
 
-## What are Grafana panel plugins?
+**Graforb** is a custom [Grafana](https://grafana.com/) panel plugin designed for visualizing large-scale graph networks. Built on top of the [**Orb** library](https://github.com/memgraph/orb), it utilizes **HTML5 Canvas** to render nodes and relationships efficiently, overcoming the performance overhead typically associated with SVG-based graph visualizations.
 
-Panel plugins allow you to add new types of visualizations to your dashboard, such as maps, clocks, pie charts, lists, and more.
+This plugin was developed to enable the visualization of complex datasets (such as those from Neo4j) directly within Grafana, offering superior performance for datasets containing thousands of nodes and edges.
 
-Use panel plugins when you want to do things like visualize data returned by data source queries, navigate between dashboards, or control external systems (such as smart home devices).
+## Key Features
 
-## Getting started
+* **Canvas-based Rendering:** Uses the Orb library to minimize DOM overhead and maximize rendering speed.
+* **Multiple Layout Strategies:** Supports various algorithms for node positioning using the Strategy pattern:
+    * Force-directed (D3-based)
+    * Hierarchical
+    * Circular
+    * Grid
+* **Dynamic Styling:** Customizable node sizes and colors based on data attributes.
 
-### Frontend
+## Getting Started
 
-1. Install dependencies
+### Prerequisites
 
-   ```bash
-   npm install
-   ```
+* Node.js
+* Docker (for running the Grafana test instance)
 
-2. Build plugin in development mode and run in watch mode
+### Development Steps
 
-   ```bash
-   npm run dev
-   ```
+1.  **Install dependencies**
 
-3. Build plugin in production mode
+    ```bash
+    npm install
+    ```
 
-   ```bash
-   npm run build
-   ```
+2.  **Build plugin in development mode and run in watch mode**
 
-4. Run the tests (using Jest)
+    ```bash
+    npm run dev
+    ```
 
-   ```bash
-   # Runs the tests and watches for changes, requires git init first
-   npm run test
+3.  **Spin up a Grafana instance and run the plugin inside it (using Docker)**
 
-   # Exits after running all the tests
-   npm run test:ci
-   ```
+    ```bash
+    npm run server
+    ```
 
-5. Spin up a Grafana instance and run the plugin inside it (using Docker)
+4.  **Build plugin for production**
 
-   ```bash
-   npm run server
-   ```
+    ```bash
+    npm run build
+    ```
 
-6. Run the E2E tests (using Playwright)
+5.  **Run the tests (using Jest)**
 
-   ```bash
-   # Spins up a Grafana instance first that we tests against
-   npm run server
+    ```bash
+    # Runs the tests and watches for changes
+    npm run test
 
-   # If you wish to start a certain Grafana version. If not specified will use latest by default
-   GRAFANA_VERSION=11.3.0 npm run server
+    # Exits after running all the tests
+    npm run test:ci
+    ```
 
-   # Starts the tests
-   npm run e2e
-   ```
+6.  **Run the E2E tests (using Playwright)**
 
-7. Run the linter
+    ```bash
+    # Spins up a Grafana instance first that we test against
+    npm run server
 
-   ```bash
-   npm run lint
+    # Starts the tests
+    npm run e2e
+    ```
 
-   # or
+7.  **Run the linter**
 
-   npm run lint:fix
-   ```
+    ```bash
+    npm run lint
+    ```
 
-# Distributing your plugin
+## Distributing your plugin
 
-When distributing a Grafana plugin either within the community or privately the plugin must be signed so the Grafana application can verify its authenticity. This can be done with the `@grafana/sign-plugin` package.
+To create a production build of the plugin:
 
-_Note: It's not necessary to sign a plugin during development. The docker development environment that is scaffolded with `@grafana/create-plugin` caters for running the plugin without a signature._
-
-## Initial steps
-
-Before signing a plugin please read the Grafana [plugin publishing and signing criteria](https://grafana.com/legal/plugins/#plugin-publishing-and-signing-criteria) documentation carefully.
-
-`@grafana/create-plugin` has added the necessary commands and workflows to make signing and distributing a plugin via the grafana plugins catalog as straightforward as possible.
-
-Before signing a plugin for the first time please consult the Grafana [plugin signature levels](https://grafana.com/legal/plugins/#what-are-the-different-classifications-of-plugins) documentation to understand the differences between the types of signature level.
-
-1. Create a [Grafana Cloud account](https://grafana.com/signup).
-2. Make sure that the first part of the plugin ID matches the slug of your Grafana Cloud account.
-   - _You can find the plugin ID in the `plugin.json` file inside your plugin directory. For example, if your account slug is `acmecorp`, you need to prefix the plugin ID with `acmecorp-`._
-3. Create a Grafana Cloud API key with the `PluginPublisher` role.
-4. Keep a record of this API key as it will be required for signing a plugin
-
-## Signing a plugin
-
-### Using Github actions release workflow
-
-If the plugin is using the github actions supplied with `@grafana/create-plugin` signing a plugin is included out of the box. The [release workflow](./.github/workflows/release.yml) can prepare everything to make submitting your plugin to Grafana as easy as possible. Before being able to sign the plugin however a secret needs adding to the Github repository.
-
-1. Please navigate to "settings > secrets > actions" within your repo to create secrets.
-2. Click "New repository secret"
-3. Name the secret "GRAFANA_API_KEY"
-4. Paste your Grafana Cloud API key in the Secret field
-5. Click "Add secret"
-
-#### Push a version tag
-
-To trigger the workflow we need to push a version tag to github. This can be achieved with the following steps:
-
-1. Run `npm version <major|minor|patch>`
-2. Run `git push origin main --follow-tags`
-
-## Learn more
-
-Below you can find source code for existing app plugins and other related documentation.
-
-- [Basic panel plugin example](https://github.com/grafana/grafana-plugin-examples/tree/master/examples/panel-basic#readme)
-- [`plugin.json` documentation](https://grafana.com/developers/plugin-tools/reference/plugin-json)
-- [How to sign a plugin?](https://grafana.com/developers/plugin-tools/publish-a-plugin/sign-a-plugin)
+```bash
+npm run build
